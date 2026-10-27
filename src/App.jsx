@@ -39,10 +39,7 @@ export default function App() {
     const video = videoRef.current
     if (!video) return
     let playUrl = ch.url
-    if (useProxy) {
-      // Proxy للقنوات المحجوبة
-      playUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(ch.url)}`
-    }
+    if (useProxy) playUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(ch.url)}`
 
     if (Hls.isSupported() && ch.url.includes('.m3u8') && !useProxy) {
       if (hlsRef.current) hlsRef.current.destroy()
@@ -71,10 +68,7 @@ export default function App() {
     setLoading(false)
   }
 
-  const loadCustom = () => {
-    if(!customUrl.trim()) return
-    loadFromUrl({ id: 'custom', url: customUrl.trim() })
-  }
+  const loadCustom = () => { if(customUrl.trim()) loadFromUrl({ id: 'custom', url: customUrl.trim() }) }
 
   const handleFile = (e) => {
     const file = e.target.files[0]
@@ -100,9 +94,8 @@ export default function App() {
       </div>
 
       <div style={{padding:'16px', background:'#0a0a0a'}}>
-        {/* رجعت زر البروكسي */}
         <button onClick={()=>setUseProxy(!useProxy)} style={{width:'100%', padding:'22px', borderRadius:'16px', border:'none', background: useProxy ? '#00ff88' : '#222', color: useProxy ? '#000' : '#fff', fontSize:'26px', fontWeight:'900', marginBottom:'14px'}}>
-          {useProxy ? '✅ Proxy مفعل - للقنوات المحجوبة' : '🔓 تفعيل Proxy للقنوات التي لا تعمل'}
+          {useProxy ? '✅ Proxy مفعل' : '🔓 تفعيل Proxy للقنوات التي لا تعمل'}
         </button>
 
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px', marginBottom:'14px'}}>
@@ -113,9 +106,8 @@ export default function App() {
           ))}
         </div>
 
-        {/* رجعت خانة رابط M3U */}
         <div style={{display:'flex', gap:'10px', marginBottom:'14px'}}>
-          <input value={customUrl} onChange={e=>setCustomUrl(e.target.value)} placeholder="الصق رابط M3U هنا..." style={{flex:1, padding:'20px', borderRadius:'16px', border:'none', background:'#1a1a1a', color:'#fff', fontSize:'24px', fontWeight:'600'}} />
+          <input value={customUrl} onChange={e=>setCustomUrl(e.target.value)} placeholder="الصق رابط M3U هنا..." style={{flex:1, padding:'20px', borderRadius:'16px', border:'none', background:'#1a1a1a', color:'#fff', fontSize:'24px'}} />
           <button onClick={loadCustom} style={{padding:'20px 28px', borderRadius:'16px', border:'none', background:'#00ff88', color:'#000', fontWeight:'900', fontSize:'24px'}}>شغل</button>
         </div>
 
@@ -128,7 +120,7 @@ export default function App() {
 
         {channels.length > 0 && (
           <>
-            <input placeholder="🔍 ابحث عن قناة..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%', padding:'20px', borderRadius:'16px', border:'none', background:'#1a1a1a', color:'#fff', marginBottom:'14px', fontSize:'26px', fontWeight:'700', boxSizing:'border-box'}} />
+            <input placeholder="🔍 ابحث عن قناة..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%', padding:'20px', borderRadius:'16px', border:'none', background:'#1a1a1a', color:'#fff', marginBottom:'14px', fontSize:'26px', boxSizing:'border-box'}} />
             <div style={{display:'grid', gap:'12px'}}>
               {filtered.slice(0,400).map((ch, i) => (
                 <div key={i} onClick={()=>playChannel(ch, i)} style={{padding:'22px', background: current?.url===ch.url ? '#00ff88' : '#141414', color: current?.url===ch.url ? '#000' : '#fff', borderRadius:'16px', fontSize:'28px', fontWeight:'800'}}>
