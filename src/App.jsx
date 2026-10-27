@@ -78,36 +78,49 @@ export default function App() {
   const filtered = channels.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
-    <div style={{background:'#000', color:'#fff', minHeight:'100vh', fontFamily:'system-ui'}}>
-      {/* فيديو كبير - بلا عنوان */}
-      <div style={{background:'#000', position:'sticky', top:0, zIndex:10}}>
-        <video ref={videoRef} controls playsInline style={{width:'100%', height:'56vh', background:'#000', objectFit:'contain'}} />
-        {current && <div style={{padding:'14px', textAlign:'center', fontSize:'26px', fontWeight:'800', color:'#00ff88', background:'#111'}}>{current.name}</div>}
-        {error && <div style={{padding:'12px', background:'#cc0000', textAlign:'center', fontSize:'22px', fontWeight:'700'}}>{error}</div>}
+    <div style={{background:'#000', color:'#fff', minHeight:'100vh', fontFamily:'system-ui', margin:0, padding:0}}>
+      {/* الفيديو طالع للفوق بلا سواد */}
+      <div style={{background:'#000', position:'sticky', top:0, zIndex:10, padding:0, margin:0}}>
+        <video 
+          ref={videoRef} 
+          controls 
+          playsInline 
+          style={{
+            width:'100%', 
+            height:'auto', 
+            maxHeight:'62vh', 
+            aspectRatio:'16/9',
+            background:'#000', 
+            display:'block',
+            objectFit:'fill'
+          }} 
+        />
+        {current && <div style={{padding:'16px', textAlign:'center', fontSize:'30px', fontWeight:'900', color:'#00ff88', background:'#0a0a0a'}}>{current.name}</div>}
+        {error && <div style={{padding:'14px', background:'#cc0000', textAlign:'center', fontSize:'26px', fontWeight:'800'}}>{error}</div>}
       </div>
 
-      <div style={{padding:'14px'}}>
-        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginBottom:'14px'}}>
+      <div style={{padding:'16px', background:'#0a0a0a'}}>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px', marginBottom:'16px'}}>
           {SERVERS.map(s => (
-            <button key={s.id} onClick={()=>loadFromUrl(s)} style={{padding:'20px', borderRadius:'16px', border:'none', background: activeServer===s.id ? '#00ff88' : '#1a1a1a', color: activeServer===s.id ? '#000' : '#fff', fontWeight:'800', fontSize:'22px'}}>
+            <button key={s.id} onClick={()=>loadFromUrl(s)} style={{padding:'24px', borderRadius:'16px', border:'none', background: activeServer===s.id ? '#00ff88' : '#1e1e1e', color: activeServer===s.id ? '#000' : '#fff', fontWeight:'900', fontSize:'26px'}}>
               {s.name}
             </button>
           ))}
         </div>
 
-        <label style={{display:'block', background:'#222', padding:'18px', borderRadius:'16px', textAlign:'center', marginBottom:'14px', fontSize:'22px', fontWeight:'700'}}>
+        <label style={{display:'block', background:'#222', padding:'22px', borderRadius:'16px', textAlign:'center', marginBottom:'16px', fontSize:'26px', fontWeight:'800'}}>
           📂 رفع ملف M3U
           <input type="file" accept=".m3u,.m3u8" onChange={handleFile} style={{display:'none'}} />
         </label>
 
-        {loading && <div style={{textAlign:'center', color:'#00ff88', fontSize:'28px', padding:'20px', fontWeight:'800'}}>⏳ يحمل...</div>}
+        {loading && <div style={{textAlign:'center', color:'#00ff88', fontSize:'32px', padding:'20px', fontWeight:'900'}}>⏳ يحمل...</div>}
 
         {channels.length > 0 && (
           <>
-            <input placeholder="🔍 ابحث عن قناة..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%', padding:'18px', borderRadius:'14px', border:'none', background:'#1a1a1a', color:'#fff', marginBottom:'12px', fontSize:'22px', boxSizing:'border-box'}} />
-            <div style={{display:'grid', gap:'10px'}}>
+            <input placeholder="🔍 ابحث عن قناة..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%', padding:'20px', borderRadius:'16px', border:'none', background:'#1a1a1a', color:'#fff', marginBottom:'14px', fontSize:'26px', fontWeight:'700', boxSizing:'border-box'}} />
+            <div style={{display:'grid', gap:'12px'}}>
               {filtered.slice(0,400).map((ch, i) => (
-                <div key={i} onClick={()=>playChannel(ch, i)} style={{padding:'18px', background: current?.url===ch.url ? '#00ff88' : '#121212', color: current?.url===ch.url ? '#000' : '#fff', borderRadius:'14px', fontSize:'24px', fontWeight:'700'}}>
+                <div key={i} onClick={()=>playChannel(ch, i)} style={{padding:'22px', background: current?.url===ch.url ? '#00ff88' : '#141414', color: current?.url===ch.url ? '#000' : '#fff', borderRadius:'16px', fontSize:'28px', fontWeight:'800', lineHeight:'1.3'}}>
                   ▶️ {ch.name}
                 </div>
               ))}
