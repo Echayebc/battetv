@@ -10,14 +10,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Grant execute permission for gradlew
-        run: chmod +x app/gradlew
+      - name: Find gradlew
+        run: |
+          find . -name "gradlew" -type f
+          ls -la
+          ls -la app/ || echo "no app folder"
+      - name: Grant permission
+        run: |
+          chmod +x ./gradlew || chmod +x app/gradlew || echo "no gradlew found"
       - name: Build APK
         run: |
-          cd app
-          ./gradlew assembleDebug
+          if [ -f "./gradlew" ]; then ./gradlew assembleDebug; elif [ -f "app/gradlew" ]; then cd app && ./gradlew assembleDebug; else echo "Gradle not found, this is not Android project"; exit 1; fi
       - name: Upload APK
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: BatteTV-APK
-          path: app/build/outputs/apk/debug/*.apk
+          path: |
+            **/build/outputs/apk/debug/*.apk
+            **/*.apk
